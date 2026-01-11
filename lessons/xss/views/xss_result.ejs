@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Result</title></head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-md p-6 bg-white rounded-lg shadow">
+    <h1 class="text-2xl font-bold mb-4">결과</h1>
+    <p class="text-gray-600 mb-6">입력된 조건으로 결과를 확인하세요.</p>
+
+    <% if (isCorrect) { %>
+      <div class="p-4 mb-4 text-green-800 bg-green-100 rounded">
+        🎉 정답입니다!
+      </div>
+    <% } else { %>
+      <div class="p-4 mb-4 text-red-800 bg-red-100 rounded">
+        ❌ 아직 정답이 아니에요. 다시 시도해 보세요.
+      </div>
+    <% } %>
+
+    <div class="mb-4 p-3 bg-gray-50 rounded overflow-auto">
+      <strong>Your message:</strong>
+      <div><%- msg %></div>
+    </div>
+
+    <div class="text-right">
+      <a href="/lesson/xss" class="inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+        다시 시도
+      </a>
+      <a href="/lesson/xss_secure" class="px-4 py-2 bg-green-600 text-white rounded">보안된 버전 보기</a>
+    </div>
+  </div>
+</body>
+</html>

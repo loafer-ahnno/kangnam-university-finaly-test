@@ -1,0 +1,88 @@
+<!-- lessons/mutation_xss/views/mutation_form.ejs -->
+<div class="flex items-center justify-center min-h-screen bg-gray-50 p-4">
+  <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-md space-y-6">
+
+    <h2 class="text-2xl font-bold text-center">Mutation-based XSS 연습</h2>
+    <p class="text-gray-600 mb-6">브라우저 보정(mutation) 취약점 이해</p>
+
+    <!-- ① HTML Fragment 입력 폼 -->
+    <form action="/lesson/mutation_xss" method="get" class="space-y-4">
+      <label class="block text-gray-700">
+        HTML 조각:
+        <input
+          type="text"
+          name="frag"
+          value="<%= frag %>"
+          placeholder="&lt;svg&gt;...&lt;/svg&gt;"
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring"
+        />
+      </label>
+      <button
+        type="submit"
+        class="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+      >
+        Render
+      </button>
+    </form>
+
+    <!-- ② 힌트 토글 -->
+    <div class="text-center">
+      <button
+        id="hint-btn"
+        class="px-4 py-2 bg-yellow-400 text-yellow-900 rounded hover:bg-yellow-500 transition"
+      >
+        힌트 보기
+      </button>
+    </div>
+    <div
+      id="hint-box"
+      class="hidden p-4 bg-yellow-100 text-yellow-800 rounded-lg space-y-2 text-sm"
+    >
+      <p>▶ 입력된 HTML 조각은 별도 검증 없이 그대로 삽입됩니다.</p>
+      <p>▶ 브라우저는 잘못된 HTML 구조를 “보정(mutation)”하며 DOM을 재구성합니다.</p>
+      <p>▶ 이 보정 단계에서 &lt;script&gt; 태그가 실행될 수 있음을 떠올려 보세요.</p>
+      <p>▶ SVG나&nbsp;<code>foreignObject</code> 같은 비표준 컨테이너를 활용해 실험해 보세요.</p>
+    </div>
+
+    <!-- ③ 결과 영역: unescaped 삽입 -->
+    <h3 class="text-lg font-semibold">결과</h3>
+    <div
+      id="output"
+      class="p-4 bg-gray-50 border rounded min-h-[4rem] overflow-auto whitespace-pre-wrap"
+    >
+      <%- frag %>
+    </div>
+    
+        <!-- 보안된 버전 보기 버튼 -->
+    <div class="mt-6 text-right">
+      <a
+        href="/lesson/mutation_xss"
+        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+      >다시 시도</a>
+      <a
+        href="/lesson/mutation_xss_secure"
+        class="ml-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+      >보안된 버전 보기</a>
+    </div>
+
+    <!-- 홈으로 -->
+    <p class="mt-6 text-center">
+      <a href="/" class="underline text-gray-600 hover:text-gray-800">← 홈으로</a>
+    </p>
+  </div>
+</div>
+
+<script>
+  // 힌트 토글 스크립트
+  document.getElementById('hint-btn').addEventListener('click', function() {
+    const box = document.getElementById('hint-box');
+    if (box.classList.contains('hidden')) {
+      box.classList.remove('hidden');
+      this.textContent = '힌트 숨기기';
+    } else {
+      box.classList.add('hidden');
+      this.textContent = '힌트 보기';
+    }
+  });
+</script>

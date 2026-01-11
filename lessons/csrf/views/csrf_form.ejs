@@ -1,0 +1,85 @@
+<!-- lessons/csrf/views/csrf_form.ejs -->
+<div class="flex items-center justify-center min-h-screen bg-gray-50 p-4">
+  <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-4">CSRF 연습: 이메일 변경</h2>
+    <p class="text-gray-600 mb-6">교차 사이트 요청 위조 실습</p>
+    <p class="mb-4 text-gray-700">
+      현재 이메일: <span class="font-medium"><%= currentEmail %></span>
+    </p>
+
+    <form action="/lesson/csrf/update" method="post" class="space-y-4">
+      <div>
+        <label for="email" class="block text-gray-700 mb-1">새 이메일</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          placeholder="new@example.com"
+          class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        />
+      </div>
+      <button
+        type="submit"
+        class="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+      >
+        이메일 변경
+      </button>
+    </form>
+
+    <!-- 힌트 토글 버튼 -->
+    <div class="mt-6 text-center">
+      <button
+        id="hint-btn"
+        class="px-4 py-2 bg-yellow-400 text-yellow-900 rounded hover:bg-yellow-500 transition"
+      >
+        힌트 보기
+      </button>
+    </div>
+
+    <!-- 힌트 박스 -->
+    <div
+      id="hint-box"
+      class="hidden mt-4 p-6 bg-yellow-100 text-yellow-800 rounded-lg space-y-4 text-sm"
+    >
+      <div class="flex items-start space-x-2">
+        <span class="mt-1 text-yellow-600">▶</span>
+        <p>
+          이 폼은 서버에서 <strong>CSRF 토큰</strong>을 검증하지 않습니다.
+          따라서 외부 페이지에서 동일한 경로에 POST 요청만 보내면
+          사용자의 인증 쿠키가 함께 전송됩니다.
+        </p>
+      </div>
+      <div>
+        <p class="font-semibold">힌트:</p>
+        <ul class="list-disc list-inside space-y-1">
+          <li>
+            HTML의 <code class="bg-yellow-200 px-1 rounded">onload</code>를 활용해,
+            페이지 로드 시 자동으로 폼을 제출해 보세요.
+          </li>
+          <li>
+            숨겨진 <code class="bg-yellow-200 px-1 rounded">&lt;input name="email"&gt;</code> 필드를
+            이용해, 사용자가 모르는 사이에 값을 전송할 수 있습니다.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="mt-6 text-center">
+      <a href="/" class="text-gray-600 hover:text-gray-800 underline">← 홈으로</a>
+    </p>
+  </div>
+</div>
+
+<script>
+  document.getElementById('hint-btn').addEventListener('click', function() {
+    const box = document.getElementById('hint-box');
+    if (box.classList.contains('hidden')) {
+      box.classList.remove('hidden');
+      this.textContent = '힌트 숨기기';
+    } else {
+      box.classList.add('hidden');
+      this.textContent = '힌트 보기';
+    }
+  });
+</script>

@@ -1,0 +1,40 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-50 p-4">
+  <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-sm space-y-6">
+    <h2 class="text-2xl font-bold text-center">CSRF 방어 버전</h2>
+    <p class="text-gray-600 text-center mb-4">
+      CSRF 토큰을 hidden 필드에 넣어 전송합니다.
+    </p>
+
+    <form action="/lesson/csrf_secure/update" method="post" class="space-y-4">
+      <!-- (1) CSRF 토큰 -->
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+
+      <!-- (2) 이메일 폼 -->
+      <p class="text-gray-700">현재 이메일: <strong><%= email %></strong></p>
+      <label class="block text-gray-700">
+        새 이메일:
+        <input
+          name="email"
+          type="email"
+          required
+          class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring"
+        />
+      </label>
+
+      <!-- (3) 제출 버튼 -->
+      <button
+        type="submit"
+        class="w-full py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+      >
+        이메일 변경
+      </button>
+    </form>
+
+    <!-- (4) 취약 버전 돌아가기 -->
+    <p class="mt-4 text-center">
+      <a href="/lesson/csrf" class="underline text-gray-600 hover:text-gray-800">
+        ← 취약 버전으로 돌아가기
+      </a>
+    </p>
+  </div>
+</div>

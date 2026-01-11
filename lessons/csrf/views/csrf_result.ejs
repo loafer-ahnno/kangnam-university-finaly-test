@@ -1,0 +1,27 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-50 p-4">
+  <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-4">이메일 변경 결과</h2>
+    <p class="text-gray-600 mb-6">입력된 조건으로 결과를 확인하세요.</p>
+    <div class="p-4 bg-green-50 text-green-800 rounded mb-6">
+      🎉 이메일이 <span class="font-medium"><%= email %></span>(으)로 변경되었습니다!
+    </div>
+    <div class="flex justify-end space-x-2">
+      <a
+        href="/lesson/csrf"
+        class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+      >다시 시도</a>
+      <a
+        href="/"
+        class="px-4 py-2 text-gray-600 hover:text-gray-800 transition"
+      >
+      홈으로
+    </a>
+          <a
+        href="/lesson/csrf_secure"
+        class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+      >
+        보안된 버전 보기
+      </a>
+    </div>
+  </div>
+</div>

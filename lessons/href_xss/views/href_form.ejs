@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Href-based XSS 연습</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+    rel="stylesheet"
+  />
+</head>
+<body class="bg-gray-50">
+
+  <div class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-md space-y-6">
+      <h2 class="text-2xl font-bold text-center">Href-based XSS 연습</h2>
+      <p class="text-gray-600 mb-6">javascript: URI 인젝션을 이용해 보세요.</p>
+
+      <!-- (1) URL 입력 폼 -->
+      <form action="/lesson/href_xss" method="get" class="space-y-4">
+        <label class="block text-gray-700">
+          링크 URL:
+          <input
+            type="text"
+            name="url"
+            value="<%= url %>"
+            placeholder="javascript:alert('XSS')"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring"
+          />
+        </label>
+        <button
+          type="submit"
+          class="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        >
+          링크 생성
+        </button>
+      </form>
+
+      <!-- (2) 힌트 토글 -->
+      <div class="text-center">
+        <button
+          id="hint-btn"
+          class="px-4 py-2 bg-yellow-400 text-yellow-900 rounded hover:bg-yellow-500 transition"
+        >
+          힌트 보기
+        </button>
+      </div>
+      <div
+        id="hint-box"
+        class="hidden p-4 bg-yellow-100 text-yellow-800 rounded text-sm space-y-2"
+      >
+         ▶ 서버는 사용자가 입력한 값을 검증 없이 그대로 링크의 `href`에 반영합니다.<br>
+         ▶ 브라우저는 프로토콜(protocol)에 따라 해당 URI를 해석해 실행합니다.<br>
+         ▶ `http://` 외에 다른 것을 한번 시도해 보세요.
+      </div>
+
+      <!-- (3) 결과: 클릭 가능한 링크 -->
+      <% if (url) { %>
+        <div class="mt-6 text-center">
+          <h3 class="text-lg font-semibold mb-2">생성된 링크</h3>
+          <a
+            id="vuln-link"
+            href="<%= url %>"
+            class="text-blue-600 underline"
+            >여기를 클릭해 보세요</a
+          >
+        </div>
+      <% } %>
+          <!-- 보안된 버전 보기 -->
+    <div class="mt-4 text-right">
+      <a
+        href="/lesson/href_xss_secure?url=<%= encodeURIComponent(url) %>"
+        class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+      >
+        보안된 버전 보기
+      </a>
+    </div>
+
+      <!-- 홈으로 -->
+      <p class="mt-8 text-center">
+        <a href="/" class="underline text-gray-600 hover:text-gray-800"
+          >← 홈으로</a
+        >
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // 힌트 토글
+    document.getElementById('hint-btn').addEventListener('click', function() {
+      const box = document.getElementById('hint-box');
+      if (box.classList.contains('hidden')) {
+        box.classList.remove('hidden');
+        this.textContent = '힌트 숨기기';
+      } else {
+        box.classList.add('hidden');
+        this.textContent = '힌트 보기';
+      }
+    });
+  </script>
+</body>
+</html>

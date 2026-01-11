@@ -1,0 +1,50 @@
+<!-- lessons/bac/views/bac_file.ejs -->
+<div class="flex items-center justify-center min-h-screen bg-gray-50 p-4">
+  <div class="bg-white rounded-lg shadow-md w-full max-w-lg p-6 space-y-6">
+    
+    <!-- 1. 파일명 헤더 -->
+    <h2 class="text-2xl font-semibold text-gray-800">
+      📄 <span class="capitalize"><%= file %></span> 내용
+    </h2>
+
+    <!-- 2. 파일 내용 -->
+    <pre class="bg-gray-100 rounded p-4 text-sm text-gray-700 whitespace-pre-wrap overflow-auto">
+<%= content %>
+    </pre>
+
+    <!-- 3. 버튼 그룹 -->
+    <div class="flex justify-between">
+      <!-- 왼쪽 버튼 -->
+      <div class="space-x-2">
+        <a
+          href="/lesson/bac"
+          class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        >
+          ← 뒤로
+        </a>
+        <a
+          href="/"
+          class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition"
+        >
+          홈으로
+        </a>
+      </div>
+      <!-- 오른쪽 버튼 -->
+      <div class="space-x-2">
+        <a
+          href="/lesson/bac?file=<%= encodeURIComponent(file) %>"
+          class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        >
+          다시 시도
+        </a>
+        <a
+          href="/lesson/bac_secure?file=<%= encodeURIComponent(file) %>"
+          class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+        >
+          보안된 버전 보기
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>

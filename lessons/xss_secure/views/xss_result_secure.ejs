@@ -1,0 +1,77 @@
+<!-- lessons/xss_secure/views/xss_secure_result.ejs -->
+<div class="flex min-h-screen bg-gray-50 p-4">
+  <!-- ─────────────────────────────────────────────────────────────────── 
+       왼쪽: 렌더링 결과 (방어 모드)
+    ─────────────────────────────────────────────────────────────────── -->
+  <main class="w-2/3 pr-4">
+    <div class="bg-white shadow-md rounded-lg p-8 w-full space-y-6">
+      <h2 class="text-2xl font-bold text-center">렌더링 결과 (방어 모드)</h2>
+      <p class="text-gray-600 whitespace-pre-wrap">
+        당신이 입력한 메시지(이스케이프됨):<br/>
+        <%= msg %>
+      </p>
+
+      <div class="text-center space-x-4 mt-6">
+        <a
+          href="/lesson/xss_secure"
+          class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+        >
+          다시 렌더
+        </a>
+        <a
+          href="/lesson/xss"
+          class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        >
+          취약 버전으로 돌아가기
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- ─────────────────────────────────────────────────────────────────── 
+       오른쪽: XSS 방어법 요약
+    ─────────────────────────────────────────────────────────────────── -->
+  <aside class="w-1/3 pl-4">
+    <div class="bg-white shadow-md rounded-lg p-6 space-y-6">
+      <h3 class="text-lg font-semibold mb-2">🔐 XSS 방어 기법</h3>
+
+      <!-- 1) 출력 시 이스케이프(Escaping) -->
+      <div class="space-y-1">
+        <h4 class="font-semibold text-gray-800">1. 출력 이스케이프</h4>
+        <p class="text-gray-600 text-sm">
+          • 사용자 입력을 HTML로 렌더링하기 전에 반드시 특수문자를 이스케이프 처리합니다.<br/>
+          • EJS 템플릿에서 <code>&lt;%&#x3D; msg %&gt;</code>처럼 기본 이스케이프 방식을 사용하면<br/>
+            사용자 스크립트가 그대로 실행되지 않고 안전하게 보여집니다.
+        </p>
+      </div>
+
+      <!-- 2) Content Security Policy (CSP) -->
+      <div class="space-y-1">
+        <h4 class="font-semibold text-gray-800">2. Content Security Policy</h4>
+        <p class="text-gray-600 text-sm">
+          • HTTP 헤더 또는 메타 태그를 통해 CSP를 설정하여, 인라인 스크립트 실행을 제한합니다.<br/>
+          • 예를 들어 <code>Content-Security-Policy: default-src 'self'; script-src 'self';</code><br/>
+            와 같은 규칙을 적용하면 외부에서 삽입된 악성 스크립트가 로드되지 않습니다.
+        </p>
+      </div>
+
+      <!-- 3) 입력값 검증 (Validation/Sanitization) -->
+      <div class="space-y-1">
+        <h4 class="font-semibold text-gray-800">3. 입력값 검증 및 정제</h4>
+        <p class="text-gray-600 text-sm">
+          • 사용자가 입력한 데이터를 서버 측에서 정규식, 화이트리스트 등을 통해 검증하거나<br/>
+            HTML sanitizer(예: DOMPurify)로 불필요한 HTML 태그/속성을 제거합니다.<br/>
+          • 이렇게 하면 스크립트 태그, 이벤트 핸들러 속성 등이 미리 차단되어<br/>
+            렌더링 시 위험이 줄어듭니다.
+        </p>
+      </div>
+
+      <!-- 주석 -->
+      <div class="pt-4 border-t border-gray-200">
+        <p class="text-xs text-gray-500">
+          ※ 위 세 가지 기법을 함께 적용하면 XSS 공격을 효과적으로 막을 수 있습니다.
+        </p>
+      </div>
+    </div>
+  </aside>
+</div>

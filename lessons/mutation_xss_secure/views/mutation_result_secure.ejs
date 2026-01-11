@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mutation-based XSS 방어 결과</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+    rel="stylesheet"
+  />
+</head>
+<body class="bg-gray-50">
+  <div class="flex min-h-screen p-4">
+    <!-- ─────────────────────────────────────────────────────────────────── 
+         왼쪽: 렌더링 결과 (방어 모드)
+      ─────────────────────────────────────────────────────────────────── -->
+    <main class="w-2/3 pr-4">
+      <div class="bg-white shadow-md rounded-lg p-8 w-full space-y-6">
+        <h2 class="text-2xl font-bold text-center">렌더링 결과 (방어 모드)</h2>
+        <p class="text-gray-600 mb-4">입력 조각(이스케이프됨):</p>
+        <div
+          class="p-4 bg-gray-100 border rounded min-h-[4rem] whitespace-pre-wrap overflow-auto"
+        >
+          <%= frag %>
+        </div>
+
+        <div class="mt-6 text-center space-x-4">
+          <a
+            href="/lesson/mutation_xss_secure"
+            class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+          >
+            다시 렌더
+          </a>
+          <a
+            href="/lesson/mutation_xss"
+            class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+          >
+            취약 버전으로 돌아가기
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <!-- ─────────────────────────────────────────────────────────────────── 
+         오른쪽: Mutation-based XSS 방어 기법 3가지 요약
+      ─────────────────────────────────────────────────────────────────── -->
+    <aside class="w-1/3 pl-4">
+      <div class="bg-white shadow-md rounded-lg p-6 space-y-6">
+        <h3 class="text-lg font-semibold mb-2">🔐 Mutation-based XSS 방어 기법</h3>
+
+        <!-- 1) DOMPurify 또는 유사 라이브러리 사용 -->
+        <div class="space-y-1">
+          <h4 class="font-semibold text-gray-800">1. 입력값 정제 (Sanitization)</h4>
+          <p class="text-gray-600 text-sm">
+            • 사용자가 입력한 HTML 조각(fragment)을 화면에 삽입하기 전<br/>
+              <code>DOMPurify</code> 같은 라이브러리로 스크립트 태그, 위험한 속성(event-handler) 등을 제거합니다.<br/>
+            • 이렇게 하면 브라우저가 입력 조각을 “안정한 HTML”로만 해석하므로<br/>
+              Mutation-based XSS 공격을 차단할 수 있습니다.
+          </p>
+        </div>
+
+        <!-- 2) Content Security Policy (CSP) -->
+        <div class="space-y-1">
+          <h4 class="font-semibold text-gray-800">2. Content Security Policy</h4>
+          <p class="text-gray-600 text-sm">
+            • HTTP 헤더나 메타 태그로<br/>
+              <code>Content-Security-Policy: default-src 'self'; script-src 'self';</code><br/>
+              와 같이 설정하면 인라인 스크립트나 외부 도메인에서 로드된 스크립트를 차단합니다.<br/>
+            • 특히 Mutation-based XSS는 동적으로 삽입된 스크립트가 실행되는 것이므로<br/>
+              CSP를 엄격히 적용하면 효과적으로 방어할 수 있습니다.
+          </p>
+        </div>
+
+        <!-- 3) innerText/ textContent 사용 -->
+        <div class="space-y-1">
+          <h4 class="font-semibold text-gray-800">3. 직접 DOM 조작 시 innerText/ textContent 사용</h4>
+          <p class="text-gray-600 text-sm">
+            • 자바스크립트에서 <code>element.innerHTML</code> 대신<br/>
+              <code>element.innerText</code> 혹은 <code>textContent</code>를 사용하여<br/>
+              HTML 태그를 텍스트로만 취급하게 합니다.<br/>
+            • 이 방식을 쓰면 브라우저가 태그를 파싱하지 않으므로<br/>
+              Mutation로 삽입된 스크립트가 절대로 실행되지 않습니다.
+          </p>
+        </div>
+
+        <!-- 요약 주석 -->
+        <div class="pt-4 border-t border-gray-200">
+          <p class="text-xs text-gray-500">
+            ※ 위 세 가지 기법을 조합하면 Mutation-based XSS 공격으로부터 안전해집니다.
+          </p>
+        </div>
+      </div>
+    </aside>
+  </div>
+</body>
+</html>
