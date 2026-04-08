@@ -30,4 +30,4 @@ lessons/
 
 ```
 ## 👤 Contributor
-* **Name:** ahnno (lofer-ahnno)
+* **Name:** ahnno (loafer-ahnno)
